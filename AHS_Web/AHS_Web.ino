@@ -10,8 +10,8 @@
 #include <RTClib.h>                             // Manages real-time clocks (RTCs) like the DS1307 or DS3231, allowing timekeeping functionality.
 #include "pitches.h"  
 // ******** Wi-Fi & Server credentials ******** //
-String networkName = "FiberHGW_TP33DA_2.4GHz";  // The SSID (name) of the Wi-Fi network to which the device will connect.
-String networkPassword = "c4KdPLD9";            // The password for the Wi-Fi network, required for authentication.
+String networkName = "";  // The SSID (name) of the Wi-Fi network to which the device will connect.
+String networkPassword = "";            // The password for the Wi-Fi network, required for authentication.
 // ******** LCD ADDRESS ******** //
 LiquidCrystal_I2C lcd(0x27, 16, 2);             // Initializes the LCD display with I2C address 0x27, 16 columns, and 2 rows.
 // ******** PINS ******** //
