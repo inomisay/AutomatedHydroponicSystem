@@ -5,8 +5,10 @@ const router = express.Router();
 const { getSensorData, getLatestSensorData } = require('./sensorData');
 const { SensorStatus } = require('./SensorStatus');
 const mongoose = require('mongoose');
-const Grid = require('gridfs-stream');
+const { GridFSBucket } = require('mongodb');
 const { MONGODB_URI } = require('./config');
+
+let gfs; // Declare the GridFS variable
 
 // Initialize MongoDB Connection
 const conn = mongoose.createConnection(MONGODB_URI, {
@@ -14,34 +16,30 @@ const conn = mongoose.createConnection(MONGODB_URI, {
     useUnifiedTopology: true,
 });
 
-let gfs;
 conn.once('open', () => {
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads'); // GridFS collection
+    gfs = new GridFSBucket(conn.db, { bucketName: 'uploads' });
+    console.log('✅ MongoDB GridFS Connected');
 });
 
-// Route to Serve Images & Videos from MongoDB
+conn.on('error', (err) => {
+    console.error('❌ MongoDB Connection Error:', err);
+});
+
+// Route to serve images & videos from MongoDB
 router.get('/media/:filename', async (req, res) => {
     try {
-        const file = await gfs.files.findOne({ filename: req.params.filename });
-        if (!file) return res.status(404).json({ error: 'File not found' });
+        const fileCursor = gfs.find({ filename: req.params.filename });
+        const files = await fileCursor.toArray();
 
-        const readStream = gfs.createReadStream(file.filename);
-        res.set('Content-Type', file.contentType);
+        if (!files.length) return res.status(404).json({ error: 'File not found' });
+
+        res.set('Content-Type', files[0].contentType);
+        const readStream = gfs.openDownloadStreamByName(req.params.filename);
         readStream.pipe(res);
     } catch (error) {
         console.error('Error fetching media:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-});
-
-// Configure Nodemailer for sending emails
-const contactEmail = nodemailer.createTransport({
-  service: 'gmail', // Email service provider
-  auth: {
-    user: process.env.EMAIL_USER, // Email user from environment variables
-    pass: process.env.EMAIL_PASS, // Email password from environment variables
-  },
 });
 
 router.get('/sensor-data', getSensorData);
