@@ -1,0 +1,1107 @@
+@charset "UTF-8";
+/*-------------------------------------------------------------------
+/* === Boostrap Main SCSS === */
+/*!
+ * Bootstrap  v5.3.2 (https://getbootstrap.com/)
+ * Copyright 2011-2023 The Bootstrap Authors
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+ /*-------------------------------------------------------------------*/
+:root,
+[data-bs-theme=light] {
+  --bs-blue: #5E50F9;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6a008a;
+  --bs-pink: #E91E63;
+  --bs-red: #f96868;
+  --bs-orange: #f2a654;
+  --bs-yellow: #f6e84e;
+  --bs-green: #46c35f;
+  --bs-teal: #58d8a3;
+  --bs-cyan: #57c7d4;
+  --bs-white: #ffffff;
+  --bs-gray: #434a54;
+  --bs-gray-light: #aab2bd;
+  --bs-gray-lighter: #e8eff4;
+  --bs-gray-lightest: #e6e9ed;
+  --bs-gray-dark: #0f1531;
+  --bs-black: #000000;
+  --bs-gray-100: #f8f9fa;
+  --bs-gray-200: #e9ecef;
+  --bs-gray-300: #dee2e6;
+  --bs-gray-400: #ced4da;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #6c757d;
+  --bs-gray-700: #495057;
+  --bs-gray-800: #343a40;
+  --bs-gray-900: #212529;
+  --bs-primary: #b66dff;
+  --bs-secondary: #c3bdbd;
+  --bs-success: #1bcfb4;
+  --bs-info: #198ae3;
+  --bs-warning: #fed713;
+  --bs-danger: #fe7c96;
+  --bs-light: #f8f9fa;
+  --bs-dark: #3e4b5b;
+  --bs-primary-rgb: 182, 109, 255;
+  --bs-secondary-rgb: 195, 189, 189;
+  --bs-success-rgb: 27, 207, 180;
+  --bs-info-rgb: 25, 138, 227;
+  --bs-warning-rgb: 254, 215, 19;
+  --bs-danger-rgb: 254, 124, 150;
+  --bs-light-rgb: 248, 249, 250;
+  --bs-dark-rgb: 62, 75, 91;
+  --bs-primary-text-emphasis: #052c65;
+  --bs-secondary-text-emphasis: #2b2f32;
+  --bs-success-text-emphasis: #0a3622;
+  --bs-info-text-emphasis: #055160;
+  --bs-warning-text-emphasis: #664d03;
+  --bs-danger-text-emphasis: #58151c;
+  --bs-light-text-emphasis: #495057;
+  --bs-dark-text-emphasis: #495057;
+  --bs-primary-bg-subtle: #cfe2ff;
+  --bs-secondary-bg-subtle: #e2e3e5;
+  --bs-success-bg-subtle: #d1e7dd;
+  --bs-info-bg-subtle: #cff4fc;
+  --bs-warning-bg-subtle: #fff3cd;
+  --bs-danger-bg-subtle: #f8d7da;
+  --bs-light-bg-subtle: #fcfcfd;
+  --bs-dark-bg-subtle: #ced4da;
+  --bs-primary-border-subtle: #9ec5fe;
+  --bs-secondary-border-subtle: #c4c8cb;
+  --bs-success-border-subtle: #a3cfbb;
+  --bs-info-border-subtle: #9eeaf9;
+  --bs-warning-border-subtle: #ffe69c;
+  --bs-danger-border-subtle: #f1aeb5;
+  --bs-light-border-subtle: #e9ecef;
+  --bs-dark-border-subtle: #adb5bd;
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #343a40;
+  --bs-body-color-rgb: 52, 58, 64;
+  --bs-body-bg: #fff;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-emphasis-color: #000;
+  --bs-emphasis-color-rgb: 0, 0, 0;
+  --bs-secondary-color: rgba(33, 37, 41, 0.75);
+  --bs-secondary-color-rgb: 33, 37, 41;
+  --bs-secondary-bg: #e9ecef;
+  --bs-secondary-bg-rgb: 233, 236, 239;
+  --bs-tertiary-color: rgba(33, 37, 41, 0.5);
+  --bs-tertiary-color-rgb: 33, 37, 41;
+  --bs-tertiary-bg: #f8f9fa;
+  --bs-tertiary-bg-rgb: 248, 249, 250;
+  --bs-heading-color: inherit;
+  --bs-link-color: #0d6efd;
+  --bs-link-color-rgb: 13, 110, 253;
+  --bs-link-decoration: underline;
+  --bs-link-hover-color: #0a58ca;
+  --bs-link-hover-color-rgb: 10, 88, 202;
+  --bs-code-color: #d63384;
+  --bs-highlight-color: #212529;
+  --bs-highlight-bg: #fff3cd;
+  --bs-border-width: 1px;
+  --bs-border-style: solid;
+  --bs-border-color: #ebedf2;
+  --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
+  --bs-border-radius: 0.375rem;
+  --bs-border-radius-sm: 0.25rem;
+  --bs-border-radius-lg: 0.5rem;
+  --bs-border-radius-xl: 1rem;
+  --bs-border-radius-xxl: 2rem;
+  --bs-border-radius-2xl: var(--bs-border-radius-xxl);
+  --bs-border-radius-pill: 50rem;
+  --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  --bs-box-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  --bs-focus-ring-width: 0.25rem;
+  --bs-focus-ring-opacity: 0.25;
+  --bs-focus-ring-color: rgba(13, 110, 253, 0.25);
+  --bs-form-valid-color: #198754;
+  --bs-form-valid-border-color: #198754;
+  --bs-form-invalid-color: #dc3545;
+  --bs-form-invalid-border-color: #dc3545;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  background: #f4f4f4;
+  line-height: 1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior: smooth;
+  }
+}
+
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem; }
+  
+a {
+  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+  text-decoration: underline;
+}
+a:hover {
+  --bs-link-color-rgb: var(--bs-link-hover-color-rgb);
+}
+
+a:not([href]):not([class]), a:not([href]):not([class]):hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.row {
+  --bs-gutter-x: 40px;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+.row > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.sensorStat {
+  padding-left: 15px;
+  padding-right: 10px;
+}
+
+.dropdown-menu-end {
+  --bs-position: end;
+}
+.dropdown-menu-end[data-bs-popper] {
+  right: 0;
+  left: auto;
+}
+
+.navbar-toggler:focus {
+  text-decoration: none;
+  outline: 0;
+  box-shadow: 0 0 0 var(--bs-navbar-toggler-focus-width);
+}
+
+.float-end {
+  float: right !important;
+}
+
+.me-2, .template-demo > .dropdown, .template-demo > .btn-group,
+.template-demo > .btn-group-vertical, .template-demo > .btn, .ajax-upload-dragdrop .template-demo > .ajax-file-upload {
+  margin-right: 0.5rem !important;
+}
+
+/*-------------------------------------------------------------------*/
+/* Animation Mixins */
+@keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    transform: translate3d(0, 0px, 0);
+  }
+}
+.dropdownAnimation, .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu {
+  animation-name: dropdownAnimation;
+  -webkit-animation-duration: 0.25s;
+  -moz-animation-duration: 0.25s;
+  -ms-animation-duration: 0.25s;
+  -o-animation-duration: 0.25s;
+  animation-duration: 0.25s;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -ms-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+/*-------------------------------------------------------------------*/
+/* === Core Styles === */
+/* Fonts */
+@font-face {
+  font-family: "ubuntu-regular";
+  src: url("../fonts/Ubuntu/Ubuntu-Regular.eot"); /* IE9 Compat Modes */
+  src: url("../fonts/Ubuntu/Ubuntu-Regular.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Regular.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "ubuntu-medium";
+  src: url("../fonts/Ubuntu/Ubuntu-Medium.eot"); /* IE9 Compat Modes */
+  src: url("../fonts/Ubuntu/Ubuntu-Medium.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Medium.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "ubuntu-bold";
+  src: url("../fonts/Ubuntu/Ubuntu-Bold.eot"); /* IE9 Compat Modes */
+  src: url("../fonts/Ubuntu/Ubuntu-Bold.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Bold.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Bold.ttf") format("truetype");
+}
+
+/*-------------------------------------------------------------------*/
+/* Typography */
+body {
+  font-size: 1rem;
+  font-family: "ubuntu-regular", sans-serif;
+  font-weight: initial;
+  line-height: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h1, h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
+  font-family: "ubuntu-medium", sans-serif;
+}
+
+p {
+  font-size: 0.875rem;
+}
+
+p {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/*-------------------------------------------------------------------*/
+/* Miscellanoeous */
+.page-header {
+  margin: 0 0 1.5rem 0;
+}
+
+.page-title {
+  color: #343a40;
+  font-size: 1.125rem;
+  margin-bottom: 0;
+}
+.page-title .page-title-icon {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0px 3px 8.3px 0.7px rgba(163, 93, 255, 0.35);
+}
+.page-title .page-title-icon i {
+  font-size: 0.9375rem;
+  line-height: 36px;
+}
+
+/*-------------------------------------------------------------------*/
+/* Utilities */
+.grid-margin {
+  margin-bottom: 2.5rem;
+}
+
+.stretch-card {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+  -webkit-justify-content: stretch;
+  justify-content: stretch;
+}
+.stretch-card > .card {
+  width: 100%;
+  min-width: 100%;
+}
+
+.text-small {
+  font-size: 12px;
+}
+
+.font-weight-bold {
+  font-family: "ubuntu-bold", sans-serif;
+}
+
+.font-weight-normal {
+  font-family: "ubuntu-regular", sans-serif;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(to right, #da8cff, #9a55ff) !important;
+}
+
+.bg-gradient-success, .table-condensed tbody tr td.day.today:before {
+  background: linear-gradient(to right, #84d9d2, #07cdae) !important;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day.today:before {
+  background: linear-gradient(to right, #8686ff, #e6b5f9) !important;
+}
+
+.bg-gradient-info {
+  background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
+}
+
+.bg-gradient-danger {
+  background: linear-gradient(to right, #ffbf96, #fe7096) !important;
+}
+
+/*-------------------------------------------------------------------*/
+/*Badge gradient variations*/
+.badge-gradient-success {
+  background: linear-gradient(to right, #84d9d2, #07cdae);
+  color: #ffffff;
+}
+
+.badge-gradient-warning {
+  background: linear-gradient(to right, #f6e384, #ffd500);
+  color: #ffffff;
+}
+
+.badge-gradient-danger {
+  background: linear-gradient(to right, #ffbf96, #fe7096);
+  color: #ffffff;
+}
+/*-------------------------------------------------------------------*/
+/* Cards */
+.card {
+  border: 0;
+  background: #fff;
+}
+.card .card-body {
+  padding: 2.5rem 2.5rem;
+}
+
+.card .card-title {
+  color: #343a40;
+  margin-bottom: 0.75rem;
+  text-transform: capitalize;
+  font-family: "ubuntu-medium", sans-serif;
+  font-size: 1.125rem;
+}
+
+.card.card-img-holder .card-img-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+/* Tables */
+.table thead th {
+  border-top: 0;
+  border-bottom-width: 1px;
+  font-family: "ubuntu-medium", sans-serif;
+  font-weight: initial;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 0.9375rem;
+}
+.table th img,
+.table td img {
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+}
+
+/*-------------------------------------------------------------------*/
+/* Datepicker */
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody {
+  position: relative;
+  top: 13px;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day {
+  font-size: 0.9375rem;
+  padding: 0.5rem 0;
+  color: #434a54;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day:hover,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day:hover {
+  background: #ffffff;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.active,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day.active {
+  color: #000000;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.active:before,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day.active:before {
+  content: "";
+  width: 38px;
+  height: 38px;
+  background: #eb2fbf !important; 
+  border-radius: 100%;
+  display: block;
+  margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  z-index: -1;
+  left: 0;
+  right: 0;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.today,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day.today {
+  color: #fff;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.today:before,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day.today:before {
+  content: "";
+  width: 38px;
+  height: 38px;
+  background: #eb2fbf;
+  border-radius: 100%;
+  display: block;
+  margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  z-index: -1;
+  left: 0;
+  right: 0;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.old.day,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.old.day {
+  color: #d9dde3;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.range-start, .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.range-end,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.range-start,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.range-end {
+  background: transparent;
+  position: relative;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.range-start::before, .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.range-end::before,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.range-start::before,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.range-end::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  background: #eb2fbf;
+  border-radius: 4px;
+  display: block;
+  margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  top: 6px;
+  z-index: -1;
+  left: 0;
+  right: 0;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.range,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.range {
+  position: relative;
+  background: transparent;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.range::before,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.range::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  background: #eee;
+  border-radius: 4px;
+  display: block;
+  margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  top: 6px;
+  z-index: -1;
+  left: 0;
+  right: 0;
+}
+.datepicker.datepicker-dropdown .datepicker-days,
+.datepicker.datepicker-dropdown .datepicker-months,
+.datepicker.datepicker-dropdown .datepicker-years,
+.datepicker.datepicker-dropdown .datepicker-decades,
+.datepicker.datepicker-dropdown .datepicker-centuries,
+.datepicker.datepicker-inline .datepicker-days,
+.datepicker.datepicker-inline .datepicker-months,
+.datepicker.datepicker-inline .datepicker-years,
+.datepicker.datepicker-inline .datepicker-decades,
+.datepicker.datepicker-inline .datepicker-centuries {
+  padding: 0.8rem 0.7rem;
+}
+.datepicker.datepicker-dropdown .datepicker-days table.table-condensed,
+.datepicker.datepicker-dropdown .datepicker-months table.table-condensed,
+.datepicker.datepicker-dropdown .datepicker-years table.table-condensed,
+.datepicker.datepicker-dropdown .datepicker-decades table.table-condensed,
+.datepicker.datepicker-dropdown .datepicker-centuries table.table-condensed,
+.datepicker.datepicker-inline .datepicker-days table.table-condensed,
+.datepicker.datepicker-inline .datepicker-months table.table-condensed,
+.datepicker.datepicker-inline .datepicker-years table.table-condensed,
+.datepicker.datepicker-inline .datepicker-decades table.table-condensed,
+.datepicker.datepicker-inline .datepicker-centuries table.table-condensed {
+  width: 100%;
+}
+
+.datepicker.datepicker-inline {
+  width: 100%;
+  max-width: 100%;
+  min-width: 250px;
+}
+.datepicker.datepicker-inline thead tr th.prev {
+  color: grey;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+.datepicker.datepicker-inline thead tr th.datepicker-switch {
+  color: #b66dff;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+.datepicker.datepicker-inline thead tr th.next {
+  color: grey;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+.datepicker > div {
+  display: initial;
+}
+
+.datepicker-custom {
+  width: 100%;
+  padding: 0;
+}
+.datepicker-custom .datepicker.datepicker-inline {
+  display: block;
+  padding: 0;
+  height: 100%;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days {
+  display: block;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td {
+  padding: 1rem;
+  text-align: center;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td {
+    padding: 1rem 0.5rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day.today:before {
+  top: 13px;
+  bottom: 10px;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day.active:before {
+  top: 13px;
+  bottom: 10px;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:first-child {
+  padding-left: 2.5rem;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:first-child {
+    padding-left: 0.5rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:first-child.today:before, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:first-child.active:before {
+  left: 1.5rem;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:first-child.today:before, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:first-child.active:before {
+    left: 0.25rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:last-child {
+  padding-right: 2.5rem;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:last-child {
+    padding-right: 0.5rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:last-child.today:before, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed tbody tr td.day:last-child.active:before {
+  right: 1.5rem;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries {
+  height: 100%;
+  padding: 0 0 1rem 0;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed {
+  height: 100%;
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead {
+  background: linear-gradient(to right, #8686ff, #e6b5f9);
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.dow,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.dow,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.dow,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.dow,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.dow {
+  background: transparent;
+  border-radius: 0;
+  color: #ffffff;
+  padding: 2rem 1rem;
+  font-family: "ubuntu-bold", sans-serif;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.dow,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.dow,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.dow,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.dow,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.dow {
+    padding: 2rem 0.5rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next:first-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev:first-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch:first-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.dow:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.dow:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.dow:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.dow:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch:first-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.dow:first-child {
+  padding-left: 2.5rem;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next:first-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev:first-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch:first-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.dow:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.dow:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.dow:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.dow:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch:first-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.dow:first-child {
+    padding-left: 0.5rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next:last-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev:last-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch:last-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.dow:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.dow:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.dow:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.dow:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch:last-child,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.dow:last-child {
+  padding-right: 2.5rem;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next:last-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev:last-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch:last-child, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.dow:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.dow:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.dow:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.dow:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch:last-child,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.dow:last-child {
+    padding-right: 0.5rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch {
+  font-size: 2rem;
+}
+@media (max-width: 991px) {
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.datepicker-switch,
+  .datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.datepicker-switch {
+    font-size: 1rem;
+  }
+}
+.datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.next, .datepicker-custom .datepicker.datepicker-inline .datepicker-days .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-months .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-years .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-decades .table-condensed thead tr th.prev,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.next,
+.datepicker-custom .datepicker.datepicker-inline .datepicker-centuries .table-condensed thead tr th.prev {
+  font-size: 1.5rem;
+}
+
+/*-------------------------------------------------------------------*/
+/* Navbar */
+.navbar {
+  font-family: "ubuntu-light", sans-serif;
+  background: #fff;
+  transition: background 0.25s ease;
+  -webkit-transition: background 0.25s ease;
+  -moz-transition: background 0.25s ease;
+  -ms-transition: background 0.25s ease;
+}
+
+.navbar .navbar-menu-wrapper {
+  transition: width 0.25s ease;
+  -webkit-transition: width 0.25s ease;
+  -moz-transition: width 0.25s ease;
+  -ms-transition: width 0.25s ease;
+  color: #9c9fa6;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: calc(100% - 260px);
+  height: 70px;
+  font-weight: bold;
+}
+
+.navbar .navbar-menu-wrapper .count-indicator:after {
+  display: none;
+}
+.navbar .navbar-menu-wrapper .navbar-nav {
+  flex-direction: row;
+  align-items: center;
+}
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item .nav-link {
+  color: inherit;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  align-items: center;
+}
+
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item .nav-link i {
+  font-size: 24px;
+}
+
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown {
+  position: absolute;
+  font-size: 0.9rem;
+  margin-top: 0;
+  padding: 0;
+}
+
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item {
+  margin-bottom: 0;
+  padding: 11px 13px;
+  cursor: pointer;
+}
+
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-divider {
+  margin: 0;
+}
+
+.navbar .navbar-menu-wrapper .navbar-nav.navbar-nav-right {
+  margin-left: auto;
+}
+.rtl .navbar .navbar-menu-wrapper .navbar-nav.navbar-nav-right {
+  margin-left: 0;
+  margin-right: auto;
+}
+/*-------------------------------------------------------------------*/
+/* Layouts */
+.navbar.fixed-top + .page-body-wrapper {
+  padding-top: 70px;
+}
+
+.content-wrapper {
+  background: #f0f2f5;
+  padding-top: 1.25rem;
+  width: 100%;
+}
+/*-------------------------------------------------------------------*/
+p {
+  margin-top: 0;
+  margin-bottom: 1rem; 
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent; 
+}
+a:hover {
+  color: #0056b3;
+  text-decoration: underline; 
+}
+
+table {
+  border-collapse: collapse;
+}
+
+h6, .h6 {
+  font-size: 1.2rem; 
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto; 
+}
+
+@media (min-width: 768px) {
+  .col-md-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.33333%;
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%; }
+  .col-lg-6 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%; }
+}
+  
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529; 
+}
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6; 
+}
+.table thead th { 
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6; 
+}
+.table tbody + tbody {
+  border-top: 2px solid #dee2e6; 
+}
+
+.dropup, .dropright, .dropdown, .dropleft {
+  position: relative; 
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem; 
+}
+
+.dropdown-divider {
+  height: 0;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  border-top: 1px solid #e9ecef; 
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0; 
+}
+
+.dropdown-menu.show {
+  display: block; 
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5rem 0.2rem; 
+}
+
+.navbar-brand {
+  display: inline-block;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  white-space: nowrap; 
+}
+
+.navbar-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none; 
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out; 
+}
+
+.mb-5,
+.my-5 {
+  margin-bottom: 3rem !important; 
+}
+
+.p-0 {
+  padding: 0 !important; 
+}
+
+.p-3 {
+  padding: 1rem !important; 
+}
+
+.text-white {
+  color: #fff !important; 
+}
+
+.card {
+  position: relative;
+  -webkit-box-orient: vertical;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem; 
+}
+
+.card-text:last-child {
+  margin-bottom: 0; 
+}
+
+.card-title {
+  margin-top: 0;
+}
+  
+.date-container {
+  position: relative;
+  margin-left: 20px; 
+}
+  
+.d-flex {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030; 
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  background: #f4f4f4;
+  line-height: 1;
+}
