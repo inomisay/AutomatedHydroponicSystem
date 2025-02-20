@@ -18,7 +18,7 @@ class Program
         SerialPort serialPort = new SerialPort(portName, baudRate);
 
         // MongoDB connection setup
-        string connectionString = "mongodb+srv://jmvshp:sg7OvA0yetgIX5GX@cluster0.75bo5zs.mongodb.net/";
+        string connectionString = "";
         var client = new MongoClient(connectionString);
         var database = client.GetDatabase("AHS_DB");
         var collection = database.GetCollection<SensorData>("SensorReadings");
