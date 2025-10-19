@@ -82,8 +82,43 @@ The system consists of a **DWC hydroponic setup** where plant roots are suspende
 
 ---
 
-## 🏃‍♂️ How to Run the Project  
 
+## 🏃‍♂️ How to Run the Project
+
+This project includes two backend servers: one built with **Node.js** and one with **.NET (C#)**.
+
+### 🚀 Node.js Server
+1. Open a terminal in the project root directory.
+2. Install dependencies:
+	```sh
+	npm install
+	```
+3. Start the Node.js server (use `npx` if nodemon is not installed globally):
+	```sh
+	npx nodemon server.js
+	```
+	or
+	```sh
+	npm start
+	```
+4. The server will run at [http://localhost:8080](http://localhost:8080) by default.
+
+### 🚀 .NET (C#) Server
+1. Open a terminal and navigate to the `DataRetrival` directory:
+	```sh
+	cd DataRetrival
+	```
+2. Build the project:
+	```sh
+	dotnet build
+	```
+3. Run the .NET server:
+	```sh
+	dotnet run
+	```
+4. The .NET server will run according to the configuration in `DataRetrival.csproj`.
+
+---
 1️⃣ **Set up the hardware** by assembling the sensors, relays, and pumps.  
 2️⃣ **Flash the Arduino code** onto the board.  
 3️⃣ **Connect the ESP8266 Wi-Fi module** for data transmission.  

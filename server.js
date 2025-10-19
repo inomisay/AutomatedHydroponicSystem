@@ -1,3 +1,4 @@
+// RUN: npx nodemon server.js  
 // server.js
 const express = require('express');
 const { PORT } = require('./utility/config');

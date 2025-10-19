@@ -8,7 +8,13 @@
       method: 'GET',
       success: function (data) {
         console.log('*****************************************************');
-        console.log('Sensor Status data:', data); // Check the data received
+        console.log('Sensor Status data received:', data); // Check the data received
+        console.log('Water Temperature Status:', data.waterTemperatureStatus);
+        console.log('Environment Temperature Status:', data.environmentTemperatureStatus);
+        console.log('Humidity Status:', data.humidityStatus);
+        console.log('Water Level Status:', data.waterLevelStatus);
+        console.log('TDS Status:', data.tdsStatus);
+        console.log('pH Status:', data.pHStatus);
         updateSensorStatus(data); // Update with the received sensor data
       },
       error: function (error) {
@@ -18,19 +24,30 @@
   }
 
   // Update sensor status and last update time in the table
-  function updateSensorStatus(sensors) {
-    sensors.forEach(sensor => {
-      // Helper function to determine status based on value
-      const determineStatus = (value) => {
-        return (value === null || isNaN(value) || value === '') ? 'Offline' : 'Online';
-      };
+  function updateSensorStatus(statusData) {
+    // Map the status data to the corresponding HTML elements
+    const statusMapping = [
+      { id: 'waterTemperature-status', value: statusData.waterTemperatureStatus },
+      { id: 'temperature-status', value: statusData.environmentTemperatureStatus },
+      { id: 'humidity-status', value: statusData.humidityStatus },
+      { id: 'waterLevel-status', value: statusData.waterLevelStatus },
+      { id: 'tds-status', value: statusData.tdsStatus },
+      { id: 'ph-status', value: statusData.pHStatus }
+    ];
 
-      // Get sensor status and update the element
-      const status = determineStatus(sensor.status);
-      const statusElement = $(`#${sensor.id}-status`);
-      statusElement.text(status === 'Online' ? 'Online' : 'Offline');
+    // Update each sensor status element
+    statusMapping.forEach(sensor => {
+      const statusElement = $(`#${sensor.id}`);
+      const status = sensor.value || 'Offline'; // Default to Offline if no value
+      
+      statusElement.text(status);
       statusElement.removeClass('badge-gradient-success badge-gradient-danger');
-      statusElement.addClass(status === 'Online' ? 'badge badge-gradient-success' : 'badge badge-gradient-danger');
+      
+      if (status === 'Online') {
+        statusElement.addClass('badge badge-gradient-success');
+      } else {
+        statusElement.addClass('badge badge-gradient-danger');
+      }
     });
   }
 
@@ -186,7 +203,7 @@
       method: 'GET',
       success: function (data) {
         $('.current-date').text(data.date); // Update the date on the page
-        $('.current-time').text(data.time); // Update the time on the page
+        $('.current-time').text(data.date + ' ' + data.time); // Update with date and time
       },
       error: function (error) {
         console.error('Error fetching RTC date:', error);
