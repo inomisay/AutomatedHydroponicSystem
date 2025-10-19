@@ -1,3 +1,65 @@
+# =========================
+# Node.js
+# =========================
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 package-lock.json
+.env
+dist/
+build/
+coverage/
+*.log
+
+# =========================
+# .NET / C#
+# =========================
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.dll
+*.exe
+*.pdb
+*.cache
+*.dbmdl
+*.bak
+*.tmp
+*.ide
+*.vs/
+
+# =========================
+# OS and Editor Files
+# =========================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VSCode
+.vscode/
+.history/
+
+# =========================
+# Project-Specific
+# =========================
+# Ignore large or temporary assets
 public/assets/images/
+public/assets/vendors/
+public/assets/css/bootstrap/
+public/assets/fonts/
+public/.DS_Store
+public/assets/.DS_Store
+
+# If you ever generate data or logs:
+data/
+logs/
+tmp/
