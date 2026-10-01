@@ -11,10 +11,7 @@ const { MONGODB_URI } = require('./config');
 let gfs; // Declare the GridFS variable
 
 // Initialize MongoDB Connection
-const conn = mongoose.createConnection(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+const conn = mongoose.createConnection(MONGODB_URI);
 
 conn.once('open', () => {
     gfs = new GridFSBucket(conn.db, { bucketName: 'uploads' });
