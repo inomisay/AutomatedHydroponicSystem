@@ -51,11 +51,15 @@ Desktop.ini
 # =========================
 # Project-Specific
 # =========================
-# Ignore large or temporary assets
-public/assets/images/
-public/assets/vendors/
-public/assets/css/bootstrap/
-public/assets/fonts/
+# Ignore large raw videos and unprocessed HEICs (stored in GridFS)
+public/assets/images/screen/*.MOV
+public/assets/images/screen/*.mov
+public/assets/images/screen/*.MP4
+public/assets/images/screen/*.mp4
+public/assets/images/screen/*.HEIC
+public/assets/images/screen/*.heic
+
+# OS artifacts
 public/.DS_Store
 public/assets/.DS_Store
 

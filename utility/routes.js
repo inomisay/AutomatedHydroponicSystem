@@ -8,30 +8,114 @@ const mongoose = require('mongoose');
 const { GridFSBucket } = require('mongodb');
 const { MONGODB_URI } = require('./config');
 
-let gfs; // Declare the GridFS variable
+const fs = require('fs');
+const path = require('path');
+const connectDB = require('./database');
 
-// Initialize MongoDB Connection
-const conn = mongoose.createConnection(MONGODB_URI);
+let gfsBucket = null;
 
-conn.once('open', () => {
-    gfs = new GridFSBucket(conn.db, { bucketName: 'uploads' });
-    console.log('✅ MongoDB GridFS Connected');
-});
+async function getGFS() {
+    if (gfsBucket) return gfsBucket;
+    const dbConn = await connectDB();
+    if (dbConn && dbConn.connection && dbConn.connection.db) {
+        gfsBucket = new GridFSBucket(dbConn.connection.db, { bucketName: 'uploads' });
+        return gfsBucket;
+    }
+    if (mongoose.connection && mongoose.connection.db) {
+        gfsBucket = new GridFSBucket(mongoose.connection.db, { bucketName: 'uploads' });
+        return gfsBucket;
+    }
+    return null;
+}
 
-conn.on('error', (err) => {
-    console.error('❌ MongoDB Connection Error:', err);
-});
+// Helper to locate media files locally in public/assets/images
+const findLocalMedia = (filename) => {
+    const candidates = [
+        path.join(__dirname, '../public/assets/images', filename),
+        path.join(__dirname, '../public/assets/images/screen', filename),
+        path.join(__dirname, '../public/assets/images/team', filename),
+        path.join(__dirname, '../public/assets/images/sensors', filename),
+        path.join(__dirname, '../public/assets/images/dashboard', filename),
+        path.join(__dirname, '../public/assets/images/svg', filename),
+    ];
 
-// Route to serve images & videos from MongoDB
+    // If filename has .HEIC, check .jpg candidate as well
+    if (filename.toLowerCase().endsWith('.heic')) {
+        const base = filename.slice(0, -5);
+        candidates.unshift(path.join(__dirname, '../public/assets/images/screen', `${base}.jpg`));
+        candidates.unshift(path.join(__dirname, '../public/assets/images/screen', `${base}.JPG`));
+    }
+
+    for (const candidate of candidates) {
+        if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+            return candidate;
+        }
+    }
+    return null;
+};
+
+// Route to serve images & videos from local filesystem or MongoDB GridFS
 router.get('/media/:filename', async (req, res) => {
     try {
-        const fileCursor = gfs.find({ filename: req.params.filename });
-        const files = await fileCursor.toArray();
+        const { filename } = req.params;
 
-        if (!files.length) return res.status(404).json({ error: 'File not found' });
+        // 1. Try local file first (fastest, supports Range requests natively)
+        const localPath = findLocalMedia(filename);
+        if (localPath) {
+            return res.sendFile(localPath);
+        }
 
-        res.set('Content-Type', files[0].contentType);
-        const readStream = gfs.openDownloadStreamByName(req.params.filename);
+        // 2. Fall back to MongoDB GridFS
+        const bucket = await getGFS();
+        if (!bucket) {
+            return res.status(503).json({ error: 'Database media storage not ready' });
+        }
+
+        // Candidate names in GridFS (including JPG equivalent if requested as HEIC)
+        const searchNames = [filename];
+        if (filename.toLowerCase().endsWith('.heic')) {
+            const base = filename.slice(0, -5);
+            searchNames.push(`${base}.jpg`);
+            searchNames.push(`${base}.JPG`);
+        }
+
+        let file = null;
+        for (const name of searchNames) {
+            const files = await bucket.find({ filename: name }).toArray();
+            if (files.length > 0) {
+                file = files[0];
+                break;
+            }
+        }
+
+        if (!file) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        res.set('Cache-Control', 'public, max-age=86400');
+        res.set('Content-Type', file.contentType || 'application/octet-stream');
+
+        // Handle HTTP Range header for video streaming
+        const range = req.headers.range;
+        if (range && file.length) {
+            const parts = range.replace(/bytes=/, '').split('-');
+            const start = parseInt(parts[0], 10);
+            const end = parts[1] ? parseInt(parts[1], 10) : file.length - 1;
+            const chunkSize = end - start + 1;
+
+            res.status(206);
+            res.set({
+                'Content-Range': `bytes ${start}-${end}/${file.length}`,
+                'Accept-Ranges': 'bytes',
+                'Content-Length': chunkSize,
+            });
+
+            const stream = bucket.openDownloadStreamByName(file.filename, { start, end: end + 1 });
+            return stream.pipe(res);
+        }
+
+        res.set('Content-Length', file.length);
+        const readStream = bucket.openDownloadStreamByName(file.filename);
         readStream.pipe(res);
     } catch (error) {
         console.error('Error fetching media:', error);
@@ -128,12 +212,13 @@ router.post('/contact', (req, res) => {
   const { name, email, subject, textMessage } = req.body;
 
   // Construct the email message
+  const websiteName = process.env.WEBSITE_NAME || 'Automated Hydroponic System';
   const mailOptions = {
     from: `"${name}" <${email}>`, // Sender's name and email
     to: process.env.EMAIL_USER, // Recipient's email
     subject: subject, // Subject of the email
-    text: `Website: ${process.env.WEBSITE_NAME}\nName: ${name}\nEmail: ${email}\nMessage: ${textMessage}`, // Plain text body
-    html: `<p><strong>Website:</strong> ${process.env.WEBSITE_NAME}</p><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${textMessage}</p>`, // HTML body
+    text: `Website: ${websiteName}\nName: ${name}\nEmail: ${email}\nMessage: ${textMessage}`, // Plain text body
+    html: `<p><strong>Website:</strong> ${websiteName}</p><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${textMessage}</p>`, // HTML body
   };
 
   // Send the email
