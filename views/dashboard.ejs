@@ -2,25 +2,80 @@
 <%- include('dashboard_partials/header') %>
 <!-- ======= Navbar ======= -->
 <%- include('dashboard_partials/navbar') %>
-<!-- ======= Partial ======= -->
-<div class="container-fluid page-body-wrapper">
-  <div class="main-panel">
-    <div class="content-wrapper">
-      <!-- ======= Page Header ======= -->
-      <%- include('dashboard_partials/page_header') %>
-      <!-- ======= Info ======= -->
-      <%- include('dashboard_partials/info') %>
-      <div class="row">
-        <!-- ======= Charts ======= -->
-        <%- include('dashboard_partials/charts') %>
-        <!-- ======= Sensor Status ======= -->
-        <%- include('dashboard_partials/status') %>
-        <!-- ======= Calendar ======= -->
-        <%- include('dashboard_partials/calendar') %>
-      </div>
+
+<main class="dash container-xxl">
+  <!-- ======= Page Header ======= -->
+  <div class="dash-header">
+    <div>
+      <h1 class="dash-title">Live Monitoring</h1>
+      <p class="dash-subtitle">
+        Deep Water Culture system &middot; last reading
+        <span id="last-reading">—</span>
+      </p>
+    </div>
+    <div class="dash-actions">
+      <span id="connection-pill" class="pill pill-muted"><span class="dot"></span><span class="pill-text">Connecting…</span></span>
+      <button id="refresh-btn" type="button" class="btn btn-outline-secondary btn-sm" title="Refresh now">
+        <i class="bi bi-arrow-clockwise"></i><span class="d-none d-sm-inline ms-1">Refresh</span>
+      </button>
     </div>
   </div>
-</div>
+
+  <div id="data-alert" class="alert alert-warning d-none" role="alert"></div>
+
+  <!-- ======= Latest readings ======= -->
+  <%- include('dashboard_partials/info') %>
+
+  <!-- ======= Charts ======= -->
+  <section class="row g-3 mt-1" aria-label="Last 24 readings">
+    <% sensors.forEach(function (s) { %>
+    <div class="col-12 col-lg-6">
+      <div class="card dash-card h-100">
+        <div class="card-body">
+          <div class="chart-head">
+            <div>
+              <h2 class="card-title"><i class="bi <%= s.icon %>" style="color: <%= s.color %>"></i> <%= s.label %></h2>
+              <p class="card-hint">Target <%= s.min %>–<%= s.max %><%= s.unit ? ' ' + s.unit : '' %><%= s.note ? ' · ' + s.note : '' %></p>
+            </div>
+            <span class="chart-range" data-range="<%= s.key %>"></span>
+          </div>
+          <div class="chart-box">
+            <canvas id="chart-<%= s.key %>" aria-label="<%= s.label %> over the last 24 readings" role="img"></canvas>
+            <div class="chart-empty">Waiting for data…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </section>
+
+  <section class="row g-3 mt-1">
+    <!-- ======= Sensor Status ======= -->
+    <%- include('dashboard_partials/status') %>
+    <!-- ======= Project ======= -->
+    <div class="col-12 col-xl-4">
+      <div class="card dash-card h-100">
+        <div class="card-body">
+          <h2 class="card-title">About this system</h2>
+          <ul class="project-list">
+            <li><i class="bi bi-flower1"></i><div><span>Technique</span><strong>Deep Water Culture (DWC)</strong></div></li>
+            <li><i class="bi bi-cpu"></i><div><span>Project</span><strong>Hardware internship · Computer Engineering</strong></div></li>
+            <li><i class="bi bi-calendar3"></i><div><span>Interval</span><strong>Summer training · 01/07/2024 – 29/07/2024</strong></div></li>
+            <li><i class="bi bi-mortarboard"></i><div><span>University</span><strong>Dokuz Eylül University · CENG</strong></div></li>
+          </ul>
+          <a class="btn btn-brand w-100 mt-2" href="/assets/documents/ARDUINO_AUTOMATED_HYDROPONIC_SYSTEM_FINAL_REPORT.pdf" target="_blank" rel="noopener">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Read the final report
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="dash-footer">
+    &copy; 2024 YGSAHS &middot; Readings refresh automatically every minute.
+  </footer>
+</main>
+
 <!-- ======= Scripts ======= -->
 <%- include('dashboard_partials/scripts') %>
 </body>

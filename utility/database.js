@@ -12,9 +12,15 @@ const connectDB = async () => {
         return cached.conn;
     }
 
+    if (!MONGODB_URI) {
+        console.error('❌ MONGODB_URI is not set — sensor data will be unavailable');
+        return null;
+    }
+
     if (!cached.promise) {
         const opts = {
             bufferCommands: false,
+            serverSelectionTimeoutMS: 10000,
         };
 
         cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongooseInstance) => {
@@ -27,10 +33,8 @@ const connectDB = async () => {
         cached.conn = await cached.promise;
     } catch (error) {
         cached.promise = null;
-        console.error('❌ Error connecting to MongoDB:', error);
-        if (!process.env.VERCEL) {
-            process.exit(1);
-        }
+        // Keep serving pages; data routes answer 503 and retry on the next request
+        console.error('❌ Error connecting to MongoDB:', error.message);
     }
 
     return cached.conn;

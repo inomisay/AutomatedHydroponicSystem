@@ -572,7 +572,7 @@ body {
     font-size: 15px;
     font-weight: 300;
     margin-bottom: 30px;
-    text-transform: capitalize;
+    text-transform: none;
   }
   
   /*--------------------------------------------------------------
@@ -1152,3 +1152,163 @@ body {
     letter-spacing: 0;
     color: #71c55d;
   }
+/*--------------------------------------------------------------
+# Polish (overrides for the template defaults above)
+--------------------------------------------------------------*/
+/* Navbar call-to-action */
+.navbar a.nav-cta,
+.navbar a.nav-cta:focus {
+  background: #71c55d;
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 18px;
+  margin-left: 12px;
+}
+
+.navbar a.nav-cta:hover {
+  background: #55b03f;
+  color: #fff;
+}
+
+.navbar-mobile a.nav-cta {
+  margin: 10px 20px;
+  justify-content: center;
+}
+
+/* Hero buttons */
+#hero .hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+#hero .btn-get-started.btn-outline {
+  background: #71c55d;
+  color: #fff;
+}
+
+#hero .btn-get-started.btn-outline:hover {
+  background: #55b03f;
+  border-color: #55b03f;
+}
+
+/* Gallery: keep slides a consistent shape */
+#screenshots .gallery-item img,
+#screenshots .gallery-item video {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #222;
+}
+
+/* Team: names always visible (hover-only overlays never show on touch screens) */
+#team .row {
+  justify-content: center;
+}
+
+#team .team-block {
+  height: auto;
+  border-radius: 14px;
+  margin-bottom: 30px;
+  background: #fff;
+  transition: transform .3s, box-shadow .3s;
+}
+
+#team .team-block:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .14);
+}
+
+#team .team-block img {
+  display: block;
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+#team .team-block .team-content,
+#team .team-block:hover .team-content {
+  position: static;
+  box-shadow: none;
+  padding: 18px 0 14px;
+}
+
+#team .team-block .team-content ul {
+  display: inline-block;
+  width: auto;
+  margin: 0 6px 6px;
+}
+
+#team .team-block .team-content ul li a {
+  font-size: 18px;
+  transition: color .3s;
+}
+
+#team .team-block .team-content ul li a:hover {
+  color: #71c55d;
+}
+
+#team .team-block .team-content span {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #888;
+}
+
+#team .team-block .team-content h4 {
+  font-size: 17px;
+  margin: 4px 0 0;
+}
+
+/* Contact form */
+#contact .form .form-control {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  box-shadow: none;
+}
+
+#contact .form .form-control:focus {
+  border-color: #71c55d;
+  box-shadow: 0 0 0 3px rgba(113, 197, 93, .2);
+}
+
+#contact .form button[type="submit"] {
+  background: #71c55d;
+  border: 0;
+  border-radius: 50px;
+  color: #fff;
+  padding: 11px 34px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background .3s;
+}
+
+#contact .form button[type="submit"]:hover {
+  background: #55b03f;
+}
+
+#contact .form button[type="submit"]:disabled {
+  opacity: .7;
+  cursor: wait;
+}
+
+/* Footer links */
+.footer .footer-logo a:not(.navbar-brand) {
+  color: #71c55d;
+}
+
+@media (max-width: 575px) {
+  #hero .hero-container {
+    padding: 0 16px;
+  }
+
+  #hero .hero-buttons .btn-get-started {
+    padding: 11px 24px;
+  }
+}

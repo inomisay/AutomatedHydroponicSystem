@@ -6,11 +6,11 @@ const { getSensorData, getLatestSensorData, SensorReadings } = require('./sensor
 const { SensorStatus } = require('./SensorStatus');
 const mongoose = require('mongoose');
 const { GridFSBucket } = require('mongodb');
-const { MONGODB_URI } = require('./config');
 
 const fs = require('fs');
 const path = require('path');
 const connectDB = require('./database');
+const sensors = require('./sensors');
 
 let gfsBucket = null;
 
@@ -99,8 +99,18 @@ router.get('/media/:filename', async (req, res) => {
         const range = req.headers.range;
         if (range && file.length) {
             const parts = range.replace(/bytes=/, '').split('-');
-            const start = parseInt(parts[0], 10);
-            const end = parts[1] ? parseInt(parts[1], 10) : file.length - 1;
+            let start = parseInt(parts[0], 10);
+            let end = parts[1] ? parseInt(parts[1], 10) : file.length - 1;
+            if (Number.isNaN(start)) {
+                // Suffix range ("bytes=-500"): the last N bytes
+                start = Math.max(file.length - end, 0);
+                end = file.length - 1;
+            }
+            end = Math.min(end, file.length - 1);
+            if (start > end) {
+                res.set('Content-Range', `bytes */${file.length}`);
+                return res.status(416).end();
+            }
             const chunkSize = end - start + 1;
 
             res.status(206);
@@ -123,42 +133,46 @@ router.get('/media/:filename', async (req, res) => {
     }
 });
 
-router.get('/sensor-data', getSensorData);
+// Make sure MongoDB is connected before any data route runs. Mongoose is
+// configured with bufferCommands: false, so on a cold start (Vercel) queries
+// issued before the connection is ready would otherwise throw.
+const requireDB = async (req, res, next) => {
+  const conn = await connectDB();
+  if (!conn) {
+    return res.status(503).json({ error: 'Database unavailable' });
+  }
+  next();
+};
 
-router.get('/latest-sensor-data', getLatestSensorData);
+router.get('/sensor-data', requireDB, getSensorData);
 
-router.get('/sensor-status', async (req, res) => {
+router.get('/latest-sensor-data', requireDB, getLatestSensorData);
+
+router.get('/sensor-status', requireDB, async (req, res) => {
   try {
     // Fetch the latest sensor status from the SensorStatus collection
     const latestSensorStatus = await SensorStatus.findOne().sort({ StatusDate: -1 }).exec();
     if (!latestSensorStatus) {
-      console.log('⚠️ No sensor status found in database');
       return res.status(404).json({ message: 'No sensor status found' });
     }
 
-    // Check if the last update is older than 30 minutes
-    const now = new Date();
+    // Treat the status as stale if the last update is older than 30 minutes
     const statusDate = new Date(latestSensorStatus.StatusDate);
     const THIRTY_MINUTES = 30 * 60 * 1000;
-    const isStale = (now - statusDate) > THIRTY_MINUTES;
-
-    console.log('========== SENSOR STATUS FROM DATABASE ==========');
-    console.log('Raw Database Document:', JSON.stringify(latestSensorStatus, null, 2));
-    console.log('StatusDate:', statusDate.toISOString(), '| Now:', now.toISOString(), '| Stale:', isStale);
-    console.log('==================================================');
+    const isStale = (Date.now() - statusDate) > THIRTY_MINUTES;
 
     // If stale, set all statuses to Offline
-    const responseData = {
-      waterTemperatureStatus: isStale ? 'Offline' : latestSensorStatus.WaterTemperatureStatus,
-      tdsStatus: isStale ? 'Offline' : latestSensorStatus.TDSStatus,
-      humidityStatus: isStale ? 'Offline' : latestSensorStatus.HumidityStatus,
-      environmentTemperatureStatus: isStale ? 'Offline' : latestSensorStatus.EnvironmentTemperatureStatus,
-      waterLevelStatus: isStale ? 'Offline' : latestSensorStatus.WaterLevelStatus,
-      pHStatus: isStale ? 'Offline' : latestSensorStatus.PHStatus,
-    };
-
-    console.log('Response being sent:', JSON.stringify(responseData, null, 2));
-    res.status(200).json(responseData);
+    const statusOf = (value) => (isStale ? 'Offline' : value);
+    res.status(200).json({
+      waterTemperatureStatus: statusOf(latestSensorStatus.WaterTemperatureStatus),
+      tdsStatus: statusOf(latestSensorStatus.TDSStatus),
+      humidityStatus: statusOf(latestSensorStatus.HumidityStatus),
+      environmentTemperatureStatus: statusOf(latestSensorStatus.EnvironmentTemperatureStatus),
+      waterLevelStatus: statusOf(latestSensorStatus.WaterLevelStatus),
+      pHStatus: statusOf(latestSensorStatus.PHStatus),
+      statusDate: statusDate.toISOString(),
+      isStale,
+    });
   } catch (error) {
     console.error('Error fetching sensor status:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -166,74 +180,104 @@ router.get('/sensor-status', async (req, res) => {
 });
 
 router.get('/rtc-date', async (req, res) => {
+  const fallback = () => {
+    const now = new Date();
+    return { date: now.toISOString().slice(0, 10), time: now.toISOString().slice(11, 16) };
+  };
+
   try {
-    // Fetch the latest sensor reading to get the date from the database
-    const latestSensorData = await SensorReadings.findOne().sort({ timestamp: -1 }).exec();
-    
+    const conn = await connectDB();
+    // Fetch the latest sensor reading to get the date reported by the device RTC
+    const latestSensorData = conn && await SensorReadings.findOne().sort({ _id: -1 }).exec();
+
     if (!latestSensorData || !latestSensorData.Date) {
-      // Fallback to current date if no data found
-      const now = new Date();
-      const formattedDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
-      const formattedTime = now.toTimeString().slice(0, 5); // HH:MM
-      return res.json({ date: formattedDate, time: formattedTime });
+      return res.json(fallback());
     }
 
-    // Use the date from the database
-    const dbDate = latestSensorData.Date; // Format: '23/11/2024'
-    const dbTime = latestSensorData.Time || '00:00'; // Format: 'HH:MM'
-    
     // Convert DD/MM/YYYY to YYYY-MM-DD for consistent display
-    const dateParts = dbDate.split('/');
-    const formattedDate = dateParts.length === 3 
-      ? `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}` 
-      : dbDate;
-    
-    res.json({ date: formattedDate, time: dbTime });
+    const dateParts = latestSensorData.Date.split('/');
+    const formattedDate = dateParts.length === 3
+      ? `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+      : latestSensorData.Date;
+
+    res.json({ date: formattedDate, time: (latestSensorData.Time || '00:00').slice(0, 5) });
   } catch (error) {
     console.error('Error fetching RTC date:', error);
-    // Fallback to current date on error
-    const now = new Date();
-    const formattedDate = now.toISOString().slice(0, 10);
-    const formattedTime = now.toTimeString().slice(0, 5);
-    res.json({ date: formattedDate, time: formattedTime });
+    res.json(fallback());
   }
 });
 
 router.get('/', (req, res) => {
-  res.render('index', { title: '🪴Automated Hydroponic System🍃' });
+  res.render('index', { title: 'YGSAHS · Automated Hydroponic System' });
 });
 
 router.get('/dashboard', (req, res) => {
-  res.render('dashboard', { title: 'Dashboard' });
+  res.render('dashboard', { title: 'Monitoring Dashboard · YGSAHS', sensors });
 });
 
-// Route for handling contact form submissions
-router.post('/contact', (req, res) => {
-  const { name, email, subject, textMessage } = req.body;
+// Mail transport for the contact form, created on first use from env vars:
+//   EMAIL_USER / EMAIL_PASS            (required)
+//   EMAIL_HOST / EMAIL_PORT            (optional, defaults to Gmail)
+let contactEmail = null;
+const getContactEmail = () => {
+  if (contactEmail) return contactEmail;
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return null;
 
-  // Construct the email message
+  const auth = { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS };
+  contactEmail = process.env.EMAIL_HOST
+    ? nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: Number(process.env.EMAIL_PORT) || 587,
+        secure: Number(process.env.EMAIL_PORT) === 465,
+        auth,
+      })
+    : nodemailer.createTransport({ service: 'gmail', auth });
+  return contactEmail;
+};
+
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[c]));
+
+// Route for handling contact form submissions
+router.post('/contact', async (req, res) => {
+  const { name, email, subject, textMessage } = req.body || {};
+
+  if (![name, email, subject, textMessage].every(v => typeof v === 'string' && v.trim())) {
+    return res.status(400).json({ message: 'Please fill in all fields.' });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ message: 'Please enter a valid email address.' });
+  }
+
+  const transport = getContactEmail();
+  if (!transport) {
+    console.error('Contact form: EMAIL_USER / EMAIL_PASS are not configured');
+    return res.status(503).json({ message: 'Messaging is not configured yet. Please try again later.' });
+  }
+
+  // Construct the email message. It is sent from our own account (most SMTP
+  // providers reject spoofed senders); replies go to the visitor.
   const websiteName = process.env.WEBSITE_NAME || 'Automated Hydroponic System';
   const mailOptions = {
-    from: `"${name}" <${email}>`, // Sender's name and email
-    to: process.env.EMAIL_USER, // Recipient's email
-    subject: subject, // Subject of the email
-    text: `Website: ${websiteName}\nName: ${name}\nEmail: ${email}\nMessage: ${textMessage}`, // Plain text body
-    html: `<p><strong>Website:</strong> ${websiteName}</p><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${textMessage}</p>`, // HTML body
+    from: `"${websiteName}" <${process.env.EMAIL_USER}>`,
+    replyTo: `"${name.replace(/"/g, '')}" <${email}>`,
+    to: process.env.EMAIL_TO || process.env.EMAIL_USER,
+    subject: `[${websiteName}] ${subject}`,
+    text: `Website: ${websiteName}\nName: ${name}\nEmail: ${email}\nMessage: ${textMessage}`,
+    html: `<p><strong>Website:</strong> ${escapeHtml(websiteName)}</p>`
+      + `<p><strong>Name:</strong> ${escapeHtml(name)}</p>`
+      + `<p><strong>Email:</strong> ${escapeHtml(email)}</p>`
+      + `<p><strong>Message:</strong><br>${escapeHtml(textMessage).replace(/\n/g, '<br>')}</p>`,
   };
 
-  // Send the email
-  contactEmail.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error); // Log the error
-      res.status(500).json({ message: 'Error sending email' }); // Respond with error status
-    } else {
-      console.log('Email sent successfully'); // Log success
-      console.log("Message sent: %s", info.messageId); // Log message ID
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info)); // Log preview URL (useful for test accounts)
-
-      res.status(200).json({ message: 'Email sent successfully' }); // Respond with success status
-    }
-  });
+  try {
+    await transport.sendMail(mailOptions);
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ message: "Sorry, we couldn't send your message. Please try again later." });
+  }
 });
 
 module.exports = router;

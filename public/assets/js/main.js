@@ -135,7 +135,7 @@
 	 * Scrool with ofset on links with a class name .scrollto
 	 */
 	on('click', '.scrollto', function(e) {
-	  if (select(this.hash)) {
+	  if (this.hash && select(this.hash)) {
 		e.preventDefault()
   
 		let navbar = select('#navbar')
@@ -163,7 +163,7 @@
 	/**
 	 * Clients Slider
 	 */
-	new Swiper('.screens-slider', {
+	const screensSlider = new Swiper('.screens-slider', {
 	  speed: 400,
 	  loop: true,
 	  autoplay: {
@@ -174,6 +174,7 @@
 	  pagination: {
 		el: '.swiper-pagination',
 		type: 'bullets',
+		dynamicBullets: true,
 		clickable: true
 	  },
 	  breakpoints: {
@@ -196,6 +197,13 @@
 	  }
 	});
   
+	// Don't slide away from a video while it is playing
+	select('.screens-slider video', true).forEach(video => {
+	  video.addEventListener('play', () => screensSlider.autoplay.stop())
+	  video.addEventListener('pause', () => screensSlider.autoplay.start())
+	  video.addEventListener('ended', () => screensSlider.autoplay.start())
+	})
+
 	/**
 	 * Initiate  glightbox 
 	 */

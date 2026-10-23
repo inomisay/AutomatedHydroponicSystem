@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('contactForm');
+    if (!form) return;
     const errorMessageElement = document.getElementById('errorMessage');
     const sentMessageElement = document.getElementById('sentMessage');
     const submitButton = document.getElementById('submitButton');
@@ -7,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
         submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
         errorMessageElement.style.display = 'none';
         sentMessageElement.style.display = 'none';
 
@@ -27,22 +29,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(data)
             });
 
-            const result = await response.json();
+            // The server may answer with a non-JSON error page (e.g. a proxy 502)
+            const result = await response.json().catch(() => ({}));
 
-            if (response.ok) {
-                submitButton.textContent = 'Send Message';
-                sentMessageElement.style.display = 'block';
-                form.reset(); // Clear the form fields after successful submission
-            } else {
-                throw new Error(result.message || 'Something went wrong, please try again later.');
+            if (!response.ok) {
+                throw new Error(result.message || "Sorry, we couldn't send your message. Please try again later.");
             }
+
+            sentMessageElement.style.display = 'block';
+            form.reset(); // Clear the form fields after successful submission
         } catch (error) {
             console.error('Error sending message:', error);
-            submitButton.textContent = 'Send Message';
             errorMessageElement.textContent = error.message;
             errorMessageElement.style.display = 'block';
         } finally {
-            loadingElement.style.display = 'none';
+            submitButton.textContent = 'Send Message';
+            submitButton.disabled = false;
         }
     });
 });

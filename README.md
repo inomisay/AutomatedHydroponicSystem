@@ -102,6 +102,16 @@ This project includes two backend servers: one built with **Node.js** and one wi
 	npm start
 	```
 4. The server will run at [http://localhost:8080](http://localhost:8080) by default.
+5. Configure it with a `.env` file in the project root (or the Vercel project's environment variables):
+
+	| Variable | Required | Purpose |
+	| --- | --- | --- |
+	| `MONGODB_URI` | yes | MongoDB connection string for sensor data and media |
+	| `EMAIL_USER` / `EMAIL_PASS` | for the contact form | SMTP account (a Gmail app password by default) |
+	| `EMAIL_HOST` / `EMAIL_PORT` | no | Use a non-Gmail SMTP server |
+	| `EMAIL_TO` | no | Where contact messages go (defaults to `EMAIL_USER`) |
+
+	Pages still load without the database; the dashboard shows a "data unavailable" state until it connects.
 
 ### 🚀 .NET (C#) Server
 1. Open a terminal and navigate to the `DataRetrival` directory:
